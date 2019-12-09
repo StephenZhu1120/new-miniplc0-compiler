@@ -201,9 +201,49 @@ namespace miniplc0 {
 				// 请填空：
 				// 如果当前已经读到了文件尾，则解析已经读到的字符串
 				//     如果解析结果是关键字，那么返回对应关键字的token，否则返回标识符的token
+				std::string tem_string = ss.str();
+
+				if(!current_char.has_value()){
+					if(tem_string == "begin")
+						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "end")
+						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "var")
+						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "const")
+						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "print")
+						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					//添加一个可能的错误处理，但应该不会走到这一步
+					else if(isdigit(tem_string[0]))
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+					else
+						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+				}
 				// 如果读到的是字符或字母，则存储读到的字符
+				else if(miniplc0::isalpha(current_char.value()) || miniplc0::isdigit(current_char.value()))
+					ss << current_char.value();
 				// 如果读到的字符不是上述情况之一，则回退读到的字符，并解析已经读到的字符串
 				//     如果解析结果是关键字，那么返回对应关键字的token，否则返回标识符的token
+				else{
+					unreadLast();
+					//接着复读
+					if(tem_string == "begin")
+						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "end")
+						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "var")
+						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "const")
+						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					else if(tem_string == "print")
+						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+					//添加一个可能的错误处理，但应该不会走到这一步
+					else if(isdigit(tem_string[0]))
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+					else
+						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+				}
 				break;
 			}
 
