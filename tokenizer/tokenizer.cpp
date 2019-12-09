@@ -105,6 +105,17 @@ namespace miniplc0 {
 					///// 请填空：
 					///// 对于其他的可接受字符
 					///// 切换到对应的状态
+					case ';':
+						current_state = DFAState::SEMICOLON_STATE;
+						break;
+
+					case '(':
+						current_state = DFAState::LEFTBRACKET_STATE;
+						break;
+
+					case ')':
+						current_state = DFAState::RIGHTBRACKET_STATE;
+						break;
 
 					// 不接受的字符导致的不合法的状态
 					default:
@@ -131,12 +142,59 @@ namespace miniplc0 {
 								// 当前状态是无符号整数
 			case UNSIGNED_INTEGER_STATE: {
 				// 请填空：
+
 				// 如果当前已经读到了文件尾，则解析已经读到的字符串为整数
 				//     解析成功则返回无符号整数类型的token，否则返回编译错误
+				if(!current_char.has_value()){
+					try{
+							std::string string  = ss.str();
+							int32_t number = std::stoi(string);
+							return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER, number, pos, currentPos()), std::optional<CompilationError>());
+					}
+					catch(std::invalid_argument&)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+					}
+					catch(std::out_of_range&)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
+					}
+					catch(...)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
+					}
+				}
 				// 如果读到的字符是数字，则存储读到的字符
+				else if(miniplc0::isdigit(current_char.value()))
+					ss << current_char.value();
 				// 如果读到的是字母，则存储读到的字符，并切换状态到标识符
+				else if(miniplc0::isalpha(current_char.value())){
+					ss << current_char.value();
+					current_state = DFAState::IDENTIFIER_STATE;
+				}
 				// 如果读到的字符不是上述情况之一，则回退读到的字符，并解析已经读到的字符串为整数
 				//     解析成功则返回无符号整数类型的token，否则返回编译错误
+				else{
+					unreadLast();
+					//复读上面的内容
+					try{
+							std::string string  = ss.str();
+							int32_t number = std::stoi(string);
+							return std::make_pair(std::make_optional<Token>(TokenType::UNSIGNED_INTEGER, number, pos, currentPos()), std::optional<CompilationError>());
+					}
+					catch(std::invalid_argument&)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+					}
+					catch(std::out_of_range&)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
+					}
+					catch(...)
+					{
+						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
+					}
+				}
 				break;
 			}
 			case IDENTIFIER_STATE: {
