@@ -87,12 +87,20 @@ namespace miniplc0 {
 						break;
 					case '-':
 						// 请填空：切换到减号的状态
+						current_state = DFAState::MINUS_SIGN_STATE;
+						break;
 					case '+':
 						// 请填空：切换到加号的状态
+						current_state = DFAState::PLUS_SIGN_STATE;
+						break;
 					case '*':
 						// 请填空：切换状态
+						current_state = DFAState::MULTIPLICATION_SIGN_STATE;
+						break;
 					case '/':
 						// 请填空：切换状态
+						current_state = DFAState::DIVISION_SIGN_STATE;
+						break;
 
 					///// 请填空：
 					///// 对于其他的可接受字符
