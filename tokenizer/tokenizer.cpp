@@ -256,11 +256,43 @@ namespace miniplc0 {
 								  // 当前状态为减号的状态
 			case MINUS_SIGN_STATE: {
 				// 请填空：回退，并返回减号token
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::MINUS_SIGN, '-', pos , currentPos()), std::optional<CompilationError>());
 			}
 
 								   // 请填空：
 								   // 对于其他的合法状态，进行合适的操作
 								   // 比如进行解析、返回token、返回编译错误
+			//当前为*
+			case MULTIPLICATION_SIGN_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::MULTIPLICATION_SIGN, '*', pos, currentPos()), std::optional<CompilationError>());
+			}
+			//当前为/
+			case DIVISION_SIGN_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::DIVISION_SIGN, '/', pos, currentPos()), std::make_optional<CompilationError>());
+			}
+			//当前为=
+			case EQUAL_SIGN_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::EQUAL_SIGN, '=', pos, currentPos()), std::make_optional<CompilationError>());
+			}
+			//当前为=
+			case SEMICOLON_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::SEMICOLON, ';', pos, currentPos()), std::make_optional<CompilationError>());
+			}
+			//当前为=
+			case LEFTBRACKET_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::LEFT_BRACKET, '(', pos, currentPos()), std::make_optional<CompilationError>());
+			}
+			//当前为=
+			case RIGHTBRACKET_STATE:{
+				unreadLast();
+				return std::make_pair(std::make_optional<Token>(TokenType::RIGHT_BRACKET, ')', pos, currentPos()), std::make_optional<CompilationError>());
+			}
 
 								   // 预料之外的状态，如果执行到了这里，说明程序异常
 			default:
