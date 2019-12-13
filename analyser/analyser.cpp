@@ -38,10 +38,20 @@ namespace miniplc0 {
 		// 完全可以参照 <程序> 编写
 
 		// <常量声明>
-
+		auto err = analyseConstantDeclaration();
+		if(err.has_value())
+			return err;
 		// <变量声明>
+		auto err = analyseVariableDeclaration();
+		if(err.has_value())
+			return err;
 
 		// <语句序列>
+		auto err = analyseStatementSequence();
+		if(err.has_value())
+			return err;
+
+
 		return {};
 	}
 
@@ -96,20 +106,51 @@ namespace miniplc0 {
 	// 需要补全
 	std::optional<CompilationError> Analyser::analyseVariableDeclaration() {
 		// 变量声明语句可能有一个或者多个
+		while(true){
+			// 预读？
+			auto next = nextToken();
+			if(!next.has_value())
+				return {};
 
-		// 预读？
+			// 'var'
+			if(next.value().GetType() != TokenType::VAR){
+				unreadToken();
+				return {};
+			}
 
-		// 'var'
+			// <标识符>
+			next = nextToken();
+			if(!next.has_value() || next.value().GetType()!=TokenType::IDENTIFIER)
+				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedIdentifier);
+			if(isDeclared(next.value().GetValueString()))
+				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 
-		// <标识符>
+			// 变量可能没有初始化，仍然需要一次预读
+			auto next_remain = next.value();
+			next = nextToken();
 
-		// 变量可能没有初始化，仍然需要一次预读
+			if(!next.has_value())
+				return {};
+			// 不是'='
+			if(next.value().GetType() != TokenType::EQUAL_SIGN){
+				addUninitializedVariable(next_remain);
+				_instructions.emplace_back(Operation::LIT, 0);
+				unreadToken();
+			}
+			// '<表达式>'
+			else{
+				addVariable(next_remain);
+				auto err = analyseExpression();
+				if(err.has_value())
+					return err;
+			}
 
-		// '='
-
-		// '<表达式>'
-
-		// ';'
+			// ';'
+			next = nextToken();
+			if(!next.has_value() || next.value().GetType()!=TokenType::SEMICOLON)
+				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNoSemicolon);
+		}
+		
 		return {};
 	}
 
