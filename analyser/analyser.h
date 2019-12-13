@@ -81,6 +81,10 @@ namespace miniplc0 {
 		bool isConstant(const std::string&);
 		// 获得 {变量，常量} 在栈上的偏移
 		int32_t getIndex(const std::string&);
+
+		//自定义的，用来初始化未初始化的变量
+		void init_var(const std::string&);
+
 	private:
 		std::vector<Token> _tokens;
 		std::size_t _offset;
