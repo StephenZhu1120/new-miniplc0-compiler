@@ -153,15 +153,15 @@ namespace miniplc0 {
 					}
 					catch(std::invalid_argument&)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					}
 					catch(std::out_of_range&)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
 					}
 					catch(...)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
 					}
 				}
 				// 如果读到的字符是数字，则存储读到的字符
@@ -184,15 +184,15 @@ namespace miniplc0 {
 					}
 					catch(std::invalid_argument&)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					}
 					catch(std::out_of_range&)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));
 					}
 					catch(...)
 					{
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrIntegerOverflow));//这块也不知道报什么错了，就随便报一个吧
 					}
 				}
 				break;
@@ -216,7 +216,7 @@ namespace miniplc0 {
 						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
 					//添加一个可能的错误处理，但应该不会走到这一步
 					else if(isdigit(tem_string[0]))
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					else
 						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
 				}
@@ -240,7 +240,7 @@ namespace miniplc0 {
 						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
 					//添加一个可能的错误处理，但应该不会走到这一步
 					else if(isdigit(tem_string[0]))
-						return std::make_pair(std::make_optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
+						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					else
 						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
 				}
