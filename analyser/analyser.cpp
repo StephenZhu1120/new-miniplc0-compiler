@@ -42,12 +42,12 @@ namespace miniplc0 {
 		if(err.has_value())
 			return err;
 		// <变量声明>
-		auto err = analyseVariableDeclaration();
+		err = analyseVariableDeclaration();
 		if(err.has_value())
 			return err;
 
 		// <语句序列>
-		auto err = analyseStatementSequence();
+		err = analyseStatementSequence();
 		if(err.has_value())
 			return err;
 
@@ -281,7 +281,7 @@ namespace miniplc0 {
 		//=
 		auto tem_next = next.value().GetValueString();
 		next = nextToken();
-		if(!next.has_value() || next.value().GetType!=TokenType::EQUAL_SIGN)
+		if(!next.has_value() || next.value().GetType()!=TokenType::EQUAL_SIGN)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
 		
 		//表达式
@@ -291,7 +291,7 @@ namespace miniplc0 {
 
 		//;
 		next = nextToken();
-		if(!next.has_value() || next.value().GetType!=TokenType::SEMICOLON)
+		if(!next.has_value() || next.value().GetType()!=TokenType::SEMICOLON)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNoSemicolon);
 
 		// 需要生成指令吗？
