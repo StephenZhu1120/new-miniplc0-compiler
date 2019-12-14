@@ -855,7 +855,10 @@ TEST_CASE("Official tests - Assign") {
       "end \n";
 
   auto result = analyze(input);
-
+  REQUIRE_THROWS(result.second.value());
+  if (result.second.has_value()) {
+    CAPTURE(result.second.value());
+  }
   REQUIRE_FALSE(result.second.has_value());
 
   auto vm = miniplc0::VM(result.first);

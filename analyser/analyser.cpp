@@ -122,9 +122,9 @@ namespace miniplc0 {
 			next = nextToken();
 			if(!next.has_value() || next.value().GetType()!=TokenType::IDENTIFIER)
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedIdentifier);
+	
 			if(isDeclared(next.value().GetValueString()))
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
-
 			// 变量可能没有初始化，仍然需要一次预读
 			auto next_remain = next.value();
 			next = nextToken();
@@ -224,7 +224,7 @@ namespace miniplc0 {
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
 		//又不是+又不是-，还不是数字的就是乱七八糟的错误输入
 		else if(next.value().GetType()!=TokenType::UNSIGNED_INTEGER)
-			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrAssignToConstant);
+			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
 		else{
 			out  =std::any_cast<int32_t>(next.value().GetValue()) * sign;
 		}
@@ -401,7 +401,7 @@ namespace miniplc0 {
 				break;
 			}
 			case TokenType::UNSIGNED_INTEGER:{
-				_instructions.emplace_back(Operation::LIT, std::any_cast<int32_t>(next.value().GetValueString()));
+				_instructions.emplace_back(Operation::LIT, std::any_cast<int32_t>(next.value().GetValue()));
 				break;
 			}
 			case TokenType::LEFT_BRACKET:{

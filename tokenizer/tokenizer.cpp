@@ -205,20 +205,20 @@ namespace miniplc0 {
 
 				if(!current_char.has_value()){
 					if(tem_string == "begin")
-						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "end")
-						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "var")
-						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "const")
-						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "print")
-						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					//添加一个可能的错误处理，但应该不会走到这一步
 					else if(isdigit(tem_string[0]))
 						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					else
-						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::optional<CompilationError>());
 				}
 				// 如果读到的是字符或字母，则存储读到的字符
 				else if(miniplc0::isalpha(current_char.value()) || miniplc0::isdigit(current_char.value()))
@@ -229,20 +229,20 @@ namespace miniplc0 {
 					unreadLast();
 					//接着复读
 					if(tem_string == "begin")
-						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::BEGIN, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "end")
-						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::END, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "var")
-						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::VAR, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "const")
-						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::CONST, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					else if(tem_string == "print")
-						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::PRINT, tem_string, pos, currentPos()), std::optional<CompilationError>());
 					//添加一个可能的错误处理，但应该不会走到这一步
 					else if(isdigit(tem_string[0]))
 						return std::make_pair(std::optional<Token>(), std::make_optional<CompilationError>(pos, ErrorCode::ErrInvalidIdentifier));
 					else
-						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::make_optional<CompilationError>());
+						return std::make_pair(std::make_optional<Token>(TokenType::IDENTIFIER, tem_string, pos, currentPos()), std::optional<CompilationError>());
 				}
 				break;
 			}
@@ -271,27 +271,27 @@ namespace miniplc0 {
 			//当前为/
 			case DIVISION_SIGN_STATE:{
 				unreadLast();
-				return std::make_pair(std::make_optional<Token>(TokenType::DIVISION_SIGN, '/', pos, currentPos()), std::make_optional<CompilationError>());
+				return std::make_pair(std::make_optional<Token>(TokenType::DIVISION_SIGN, '/', pos, currentPos()), std::optional<CompilationError>());
 			}
 			//当前为=
 			case EQUAL_SIGN_STATE:{
 				unreadLast();
-				return std::make_pair(std::make_optional<Token>(TokenType::EQUAL_SIGN, '=', pos, currentPos()), std::make_optional<CompilationError>());
+				return std::make_pair(std::make_optional<Token>(TokenType::EQUAL_SIGN, '=', pos, currentPos()), std::optional<CompilationError>());
 			}
 			//当前为:
 			case SEMICOLON_STATE:{
 				unreadLast();
-				return std::make_pair(std::make_optional<Token>(TokenType::SEMICOLON, ';', pos, currentPos()), std::make_optional<CompilationError>());
+				return std::make_pair(std::make_optional<Token>(TokenType::SEMICOLON, ';', pos, currentPos()), std::optional<CompilationError>());
 			}
 			//当前为(
 			case LEFTBRACKET_STATE:{
 				unreadLast();
-				return std::make_pair(std::make_optional<Token>(TokenType::LEFT_BRACKET, '(', pos, currentPos()), std::make_optional<CompilationError>());
+				return std::make_pair(std::make_optional<Token>(TokenType::LEFT_BRACKET, '(', pos, currentPos()), std::optional<CompilationError>());
 			}
 			//当前为)
 			case RIGHTBRACKET_STATE:{
 				unreadLast();
-				return std::make_pair(std::make_optional<Token>(TokenType::RIGHT_BRACKET, ')', pos, currentPos()), std::make_optional<CompilationError>());
+				return std::make_pair(std::make_optional<Token>(TokenType::RIGHT_BRACKET, ')', pos, currentPos()), std::optional<CompilationError>());
 			}
 
 								   // 预料之外的状态，如果执行到了这里，说明程序异常
